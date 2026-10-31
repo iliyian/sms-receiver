@@ -1,0 +1,30 @@
+[Unit]
+Description=SMS receiver (SmsForwarder webhook -> SQLite)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=sms-receiver
+Group=sms-receiver
+WorkingDirectory=/var/lib/sms-receiver
+EnvironmentFile=/etc/sms-receiver/env
+ExecStart=/usr/local/bin/sms-receiver
+Restart=on-failure
+RestartSec=2s
+UMask=0077
+
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+ReadWritePaths=/var/lib/sms-receiver
+
+[Install]
+WantedBy=multi-user.target
